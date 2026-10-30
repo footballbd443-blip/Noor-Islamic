@@ -131,11 +131,111 @@ footer{
 <div class="card">
 <h2>📖 পবিত্র আল-কুরআন</h2>
 <p>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-<p>বিসমিল্লাহির রাহমানির রাহিম</p>
-<p>শুরু করছি পরম করুণাময় অসীম দয়ালু আল্লাহর নামে।</p>
+<input id="surahSearch" placeholder="সূরার নাম লিখে খুঁজুন..." oninput="filterSurahs()" style="width:100%;padding:12px;margin:10px 0">
+<div id="surahList">সূরার তালিকা লোড হচ্ছে...</div>
+<div id="surahReader" style="display:none">
+<button onclick="backSurahs()">⬅ সূরার তালিকায় ফিরুন</button>
+<h2 id="surahTitle"></h2>
+<audio id="surahAudio" controls style="width:100%"></audio>
+<input id="ayahSearch" placeholder="এই সূরায় আয়াত খুঁজুন..." oninput="filterAyahs()" style="width:100%;padding:12px;margin:12px 0">
+<div id="ayahList">আয়াত লোড হচ্ছে...</div>
 </div>
-<button onclick="showPage('home')">হোমে ফিরে যান</button>
+</div>
+<button onclick="showPage('home')">🏠 হোমে ফিরে যান</button>
 </section>
+
+<script>
+let allSurahs=[];
+let currentAyahs=[];
+
+async function loadSurahs(){
+const box=document.getElementById('surahList');
+try{
+const r=await fetch('https://api.alquran.cloud/v1/surah');
+const j=await r.json();
+allSurahs=j.data;
+showSurahs(allSurahs);
+}catch(e){
+box.innerText='ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।';
+}
+}
+
+function showSurahs(list){
+const box=document.getElementById('surahList');
+box.innerHTML='';
+list.forEach(s=>{
+const b=document.createElement('button');
+b.style='display:block;width:100%;padding:14px;margin:6px 0;text-align:left;border-radius:10px;background:#075b3b;color:white;border:1px solid #c9a64b';
+b.textContent=s.number+'. '+s.name+' — '+s.englishName+' ('+s.numberOfAyahs+' আয়াত)';
+b.onclick=()=>openSurah(s.number);
+box.appendChild(b);
+});
+}
+
+function filterSurahs(){
+const q=document.getElementById('surahSearch').value.toLowerCase();
+showSurahs(allSurahs.filter(s=>
+(s.name+' '+s.englishName+' '+s.number).toLowerCase().includes(q)
+));
+}
+
+async function openSurah(n){
+document.getElementById('surahList').style.display='none';
+document.getElementById('surahSearch').style.display='none';
+document.getElementById('surahReader').style.display='block';
+document.getElementById('ayahList').innerText='আয়াত লোড হচ্ছে...';
+document.getElementById('ayahSearch').value='';
+try{
+const r=await fetch('https://api.alquran.cloud/v1/surah/'+n+'/editions/quran-uthmani,bn.bengali');
+const j=await r.json();
+const ar=j.data[0];
+const bn=j.data[1];
+currentAyahs=ar.ayahs.map((a,i)=>({
+number:a.numberInSurah,
+arabic:a.text,
+bangla:bn.ayahs[i].text
+}));
+document.getElementById('surahTitle').innerText=ar.number+'. '+ar.name+' — '+ar.englishName;
+document.getElementById('surahAudio').src='https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/'+n+'.mp3';
+showAyahs(currentAyahs);
+}catch(e){
+document.getElementById('ayahList').innerText='আয়াত লোড হয়নি। আবার চেষ্টা করুন।';
+}
+}
+
+function showAyahs(list){
+const box=document.getElementById('ayahList');
+box.innerHTML='';
+list.forEach(a=>{
+const card=document.createElement('div');
+card.style='background:#06452f;padding:15px;margin:12px 0;border-radius:12px;border:1px solid #c9a64b';
+const ar=document.createElement('p');
+ar.style='font-size:25px;line-height:2;text-align:right';
+ar.dir='rtl';
+ar.textContent=a.arabic+' ۝ '+a.number;
+const bn=document.createElement('p');
+bn.style='font-size:17px;line-height:1.8';
+bn.textContent=a.number+'. '+a.bangla;
+card.append(ar,bn);
+box.appendChild(card);
+});
+}
+
+function filterAyahs(){
+const q=document.getElementById('ayahSearch').value.toLowerCase();
+showAyahs(currentAyahs.filter(a=>
+(a.bangla+' '+a.number).toLowerCase().includes(q)
+));
+}
+
+function backSurahs(){
+document.getElementById('surahReader').style.display='none';
+document.getElementById('surahList').style.display='block';
+document.getElementById('surahSearch').style.display='block';
+}
+
+loadSurahs();
+</script>
 
 <section id="prayer" class="page">
 <div class="card">
