@@ -193,7 +193,16 @@ const bn=j.data[1];
 currentAyahs=ar.ayahs.map((a,i)=>({
 number:a.numberInSurah,
 arabic:a.text,
-bangla:bn.ayahs[i].text
+bangla:bn.ayahs[i].text,
+pronunciation:n===1?[
+'বিসমিল্লাহির রাহমানির রাহিম।',
+'আল হামদুলিল্লা-হি রাব্বিল ‘আ-লামীন।',
+'আররাহমা-নির রাহীম।',
+'মা-লিকি ইয়াওমিদ্দীন।',
+'ইয়্যা-কা না‘বুদুওয়া ইয়্যা-কা নাছতা‘ঈন।',
+'ইহদিনাসসিরা-তাল মুছতাকীম।',
+'সিরা-তাল্লাযীনা আন‘আমতা ‘আলাইহিম। গাইরিল মাগদূ বি ‘আলাইহিম ওয়ালাদ্দাল্লীন।'
+][i]:''
 }));
 document.getElementById('surahTitle').innerText=ar.number+'. '+ar.name+' — '+ar.englishName;
 document.getElementById('surahAudio').src='https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/'+n+'.mp3';
@@ -216,7 +225,12 @@ ar.textContent=a.arabic+' ۝ '+a.number;
 const bn=document.createElement('p');
 bn.style='font-size:17px;line-height:1.8';
 bn.textContent=a.number+'. '+a.bangla;
-card.append(ar,bn);
+card.append(ar,bn);if(a.pronunciation){
+  const pron=document.createElement('p');
+  pron.style='font-size:15px;line-height:1.8;color:#f3d27a';
+  pron.textContent='বাংলা উচ্চারণ: '+a.pronunciation;
+  card.appendChild(pron);
+ }
 box.appendChild(card);
 });
 }
