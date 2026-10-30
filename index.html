@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noor Islamic</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#063b2c;
+ color:white;
+}
+header{
+ background:#022b20;
+ padding:22px 15px;
+ text-align:center;
+ border-bottom:2px solid #d8b65c;
+}
+header h1{color:#e8c66d;margin:5px}
+header p{color:#ddd;margin:5px}
+.container{padding:15px}
+.card{
+ background:#10523e;
+ border:1px solid #c9a84c;
+ border-radius:15px;
+ padding:18px;
+ margin-bottom:15px;
+}
+.card h2{color:#f2d17b}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:12px;
+}
+button{
+ background:#d6b45b;
+ color:#123b2c;
+ border:0;
+ padding:12px;
+ border-radius:10px;
+ font-size:16px;
+ font-weight:bold;
+ cursor:pointer;
+}
+.feature{
+ background:#10523e;
+ border:1px solid #c9a84c;
+ padding:20px 5px;
+ border-radius:12px;
+ text-align:center;
+ cursor:pointer;
+ font-size:17px;
+}
+.feature span{
+ display:block;
+ font-size:30px;
+ margin-bottom:8px;
+}
+.page{display:none}
+.page.active{display:block}
+#count{
+ font-size:55px;
+ color:#f5d477;
+ text-align:center;
+ margin:20px;
+}
+.center{text-align:center}
+input{
+ padding:12px;
+ border-radius:8px;
+ border:0;
+ width:100%;
+}
+footer{
+ text-align:center;
+ padding:20px;
+ color:#e8c66d;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>☪ Noor Islamic</h1>
+<p>আল্লাহর পথে, সব সময়।</p>
+</header>
+
+<div class="container">
+
+<section id="home" class="page active">
+<div class="card center">
+<h2>আসসালামু আলাইকুম</h2>
+<p>আপনাকে Noor Islamic অ্যাপে স্বাগতম।</p>
+<p>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+</div>
+
+<h2>🕌 ইসলামিক সেবা</h2>
+
+<div class="grid">
+<div class="feature" onclick="showPage('quran')">
+<span>📖</span>আল-কুরআন
+</div>
+
+<div class="feature" onclick="showPage('prayer')">
+<span>🕌</span>নামাজের সময়
+</div>
+
+<div class="feature" onclick="showPage('tasbih')">
+<span>📿</span>ডিজিটাল তাসবিহ
+</div>
+
+<div class="feature" onclick="showPage('dua')">
+<span>🤲</span>দৈনন্দিন দোয়া
+</div>
+
+<div class="feature" onclick="showPage('names')">
+<span>🌙</span>আল্লাহর ৯৯ নাম
+</div>
+
+<div class="feature" onclick="showPage('hadith')">
+<span>📚</span>হাদিস
+</div>
+</div>
+</section>
+
+<section id="quran" class="page">
+<div class="card">
+<h2>📖 পবিত্র আল-কুরআন</h2>
+<p>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+<p>বিসমিল্লাহির রাহমানির রাহিম</p>
+<p>শুরু করছি পরম করুণাময় অসীম দয়ালু আল্লাহর নামে।</p>
+</div>
+<button onclick="showPage('home')">হোমে ফিরে যান</button>
+</section>
+
+<section id="prayer" class="page">
+<div class="card">
+<h2>🕌 নামাজের সময়সূচি</h2>
+<p>আপনার এলাকার সঠিক নামাজের সময় জানতে লোকেশন ও নির্ভরযোগ্য সময়সূচি API যুক্ত করতে হবে।</p>
+<p>এই ডেমোতে এখনো লাইভ সময় যুক্ত করা হয়নি।</p>
+</div>
+<button onclick="showPage('home')">হোমে ফিরে যান</button>
+</section>
+
+<section id="tasbih" class="page">
+<div class="card center">
+<h2>📿 ডিজিটাল তাসবিহ</h2>
+<div id="count">০</div>
+<button onclick="increase()">তাসবিহ গণনা করুন</button>
+<br><br>
+<button onclick="resetCount()">রিসেট</button>
+</div>
+<button onclick="showPage('home')">হোমে ফিরে যান</button>
+</section>
+
+<section id="dua" class="page">
+<div class="card">
+<h2>🤲 দৈনন্দিন দোয়া</h2>
+<h3>ঘুমানোর দোয়া</h3>
+<p>بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا</p>
+<p>উচ্চারণ: বিসমিকা আল্লাহুম্মা আমুতু ওয়া আহইয়া।</p>
+</div>
+<button onclick="showPage('home')">হোমে ফিরে যান</button>
+</section>
+
+<section id="names" class="page">
+<div class="card">
+<h2>🌙 আল্লাহর সুন্দর নাম</h2>
+<h3>الرَّحْمَٰنُ</h3>
+<p>আর-রহমান — পরম দয়ালু।</p>
+<h3>الرَّحِيمُ</h3>
+<p>আর-রহিম — অতি মেহেরবান।</p>
+<h3>الْمَلِكُ</h3>
+<p>আল-মালিক — সর্বময় অধিপতি।</p>
+</div>
+<button onclick="showPage('home')">হোমে ফিরে যান</button>
+</section>
+
+<section id="hadith" class="page">
+<div class="card">
+<h2>📚 হাদিস শরিফ</h2>
+<p>নিশ্চয়ই সকল কাজ নিয়তের উপর নির্ভরশীল।</p>
+<p>— সহিহ বুখারি, ১</p>
+</div>
+<button onclick="showPage('home')">হোমে ফিরে যান</button>
+</section>
+
+</div>
+
+<footer>
+<p>☪ Noor Islamic</p>
+<p>আল্লাহর পথে, সব সময়।</p>
+</footer>
+
+<script>
+let count=0;
+
+function increase(){
+ count++;
+ document.getElementById("count").innerText=
+ count.toLocaleString("bn-BD");
+}
+
+function resetCount(){
+ count=0;
+ document.getElementById("count").innerText="০";
+}
+
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>{
+ p.classList.remove("active");
+ });
+ document.getElementById(id).classList.add("active");
+ window.scrollTo(0,0);
+}
+</script>
+
+</body>
+</html>
