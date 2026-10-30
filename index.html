@@ -249,13 +249,57 @@ document.getElementById('surahSearch').style.display='block';
 }
 
 loadSurahs();
-</script>
+async function loadPrayerTimes(){
+  const city=document.getElementById('cityName').value.trim();
+  const result=document.getElementById('prayerResult');
 
+  if(!city){
+    result.innerHTML='<p>আগে শহরের নাম লিখুন।</p>';
+    return;
+  }
+
+  result.innerHTML='<p>সময় লোড হচ্ছে...</p>';
+
+  try{
+    const url=`https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=Bangladesh&method=1&school=1`;
+    const response=await fetch(url);
+    const data=await response.json();
+
+    if(data.code!==200) throw new Error('সময় পাওয়া যায়নি');
+
+    const t=data.data.timings;
+    const names={
+      Fajr:'ফজর',
+      Sunrise:'সূর্যোদয়',
+      Dhuhr:'যোহর',
+      Asr:'আসর',
+      Maghrib:'মাগরিব',
+      Isha:'এশা'
+    };
+
+    let html='<h3>🕌 '+city+' - নামাজের সময়</h3>';
+
+    for(const key in names){
+      html+=`<p>${names[key]} : ${t[key]}</p>`;
+    }
+
+    html+=`<p>হিজরি তারিখ: ${data.data.date.hijri.date}</p>`;
+    result.innerHTML=html;
+
+  }catch(error){
+    result.innerHTML='<p>সময় পাওয়া যায়নি। আবার চেষ্টা করুন।</p>';
+  }
+}
+</script>
 <section id="prayer" class="page">
 <div class="card">
 <h2>🕌 নামাজের সময়সূচি</h2>
-<p>আপনার এলাকার সঠিক নামাজের সময় জানতে লোকেশন ও নির্ভরযোগ্য সময়সূচি API যুক্ত করতে হবে।</p>
-<p>এই ডেমোতে এখনো লাইভ সময় যুক্ত করা হয়নি।</p>
+<p>আপনার শহরের নাম লিখুন:</p>
+<input type="text" id="cityName" placeholder="যেমন: Dhaka">
+<button onclick="loadPrayerTimes()">সময় দেখুন</button>
+<div id="prayerResult">
+<p>শহরের নাম লিখে সময় দেখুন।</p>
+</div>
 </div>
 <button onclick="showPage('home')">হোমে ফিরে যান</button>
 </section>
